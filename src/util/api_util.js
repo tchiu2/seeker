@@ -7,16 +7,27 @@ const defaultOpts = {
 
 const parseResponseData = ({ items }) =>
   items.map(({ id, searchInfo, volumeInfo }) => {
-    const { authors, title, subtitle, publisher, imageLinks } = volumeInfo;
-    const { textSnippet } = searchInfo || { textSnippet: "" };
-    return {
-      id,
+    const {
       authors,
       title,
       subtitle,
       publisher,
-      imageLinks,
+      publishedDate,
+      imageLinks: { thumbnail },
+      infoLink,
+    } = volumeInfo;
+    const { textSnippet } = searchInfo || { textSnippet: "" };
+
+    return {
+      id,
+      authors: authors.join(", "),
+      title,
+      subtitle,
+      publisher,
+      publishedDate,
+      thumbnail,
       textSnippet,
+      infoLink,
     };
   });
 
@@ -29,5 +40,5 @@ export const getBooks = (query, page = 1, options = defaultOpts) => {
 
   return fetch(`${baseURL}/volumes?q=${query}&startIndex=${startIndex}&${optionsString}`)
     .then(res => res.json())
-    .then(data => parseResponseData(data));
+    .then(parseResponseData);
 }
