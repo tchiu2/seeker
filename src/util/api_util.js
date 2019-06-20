@@ -20,9 +20,9 @@ const parseResponseData = ({ items }) =>
 
     return {
       id,
-      authors: authors.join(", "),
+      authors: authors ? authors.join(", ") : "",
       title,
-      subtitle,
+      subtitle: subtitle || "",
       publisher,
       publishedDate,
       thumbnail,
