@@ -13,16 +13,28 @@ class Main extends Component {
 
   render() {
     return (
-      <Pane
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        flex={1}
-        padding={majorScale(2)}
-      >
-        <Search updateResults={this.updateResults}/>
-        <Results results={this.state.results} />
+      <Pane>
+        <Pane
+          display="flex"
+          justifyContent="center"
+          padding={majorScale(2)}
+          elevation={1}
+          backgroundColor="white"
+          position="sticky"
+          top={0}
+        >
+          <Search updateResults={this.updateResults}/>
+        </Pane>
+        <Pane
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          flex={1}
+          padding={majorScale(2)}
+        >
+          <Results results={this.state.results} />
+        </Pane>
       </Pane>
     );
   }

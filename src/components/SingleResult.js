@@ -4,7 +4,6 @@ import {
   Heading,
   Link,
   Pane,
-  Paragraph,
   Text,
 } from 'evergreen-ui';
 import ResultSnippet from './ResultSnippet';
