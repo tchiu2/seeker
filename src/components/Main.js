@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { majorScale, Pane } from 'evergreen-ui';
+import {
+  majorScale,
+  Button,
+  Pane,
+  Spinner,
+} from 'evergreen-ui';
 
 import Search from './Search';
 import Results from './Results';
@@ -8,7 +13,10 @@ import { getBooks } from '../util/api_util';
 class Main extends Component {
   state = {
     query: '',
+    prevQuery: '',
     results: [],
+    page: 1,
+    isLoading: false,
   };
 
   handleChange = e => this.setState({ query: e.target.value });
@@ -17,19 +25,26 @@ class Main extends Component {
     if (!this.state.query) return;
 
     if (e.keyCode === 13) {
-      this.loadMore();
+      if (this.state.query !== this.state.prevQuery) {
+        this.setState({ results: [], page: 1 });
+      }
+
+      this.setState({ prevQuery: this.state.query }, this.loadMore);
       window.scrollTo(0, 0);
     }
   };
 
-  loadMore = () => {
-    const queryString = this.state.query.split(" ").join("+");
-    getBooks(queryString).then(results => this.updateResults(results));
-  };
-
   updateResults = results => this.setState({
-    results: [...this.state.results, ...results],
-  });
+    results: [...this.state.results, ...results]
+  }, this.setState({ isLoading: false }));
+
+  handleClick = e => this.setState({ page: this.state.page + 1 }, this.loadMore);
+
+  loadMore = () => {
+    const queryString = this.state.prevQuery.split(" ").join("+");
+    this.setState({ isLoading: true }, () =>
+      getBooks(queryString, this.state.page).then(this.updateResults));
+  };
 
   render() {
     return (
@@ -44,7 +59,6 @@ class Main extends Component {
           top={0}
         >
           <Search
-            updateResults={this.updateResults}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={this.props.query}
@@ -59,6 +73,11 @@ class Main extends Component {
           padding={majorScale(2)}
         >
           <Results results={this.state.results} />
+          {!this.state.isLoading ? (
+            this.state.results.length > 0 && <Button onClick={this.handleClick}>Load more</Button>
+          ) : (
+            <Spinner />
+          )}
         </Pane>
       </Pane>
     );
