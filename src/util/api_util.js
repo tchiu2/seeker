@@ -1,3 +1,5 @@
+import { AllHtmlEntities as entities } from 'html-entities';
+
 const baseURL = "https://www.googleapis.com/books/v1";
 
 const defaultOpts = {
@@ -25,7 +27,7 @@ const parseResponseData = ({ items }) =>
       publisher,
       publishedDate: publishedDate || "",
       thumbnail: (imageLinks && imageLinks.thumbnail) || "",
-      textSnippet,
+      textSnippet: entities.decode(textSnippet),
       previewLink,
     };
   });
