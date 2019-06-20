@@ -1,13 +1,17 @@
 import React from 'react';
-import { UnorderedList } from 'evergreen-ui';
+import { Pane } from 'evergreen-ui';
 import SingleResult from './SingleResult';
 
 const Results = ({ results }) => (
-  <UnorderedList>
+  <Pane
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+  >
     {results.map((result, idx) =>
       <SingleResult key={idx} result={result} />
     )}
-  </UnorderedList>
+  </Pane>
 );
 
 export default Results;

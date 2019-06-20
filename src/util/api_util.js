@@ -13,7 +13,7 @@ const parseResponseData = ({ items }) =>
       subtitle,
       publisher,
       publishedDate,
-      imageLinks: { thumbnail },
+      imageLinks,
       infoLink,
     } = volumeInfo;
     const { textSnippet } = searchInfo || { textSnippet: "" };
@@ -21,11 +21,10 @@ const parseResponseData = ({ items }) =>
     return {
       id,
       authors: authors ? authors.join(", ") : "",
-      title,
-      subtitle: subtitle || "",
+      title: title + (subtitle ? `: ${subtitle}` : ""),
       publisher,
-      publishedDate,
-      thumbnail: thumbnail || "",
+      publishedDate: publishedDate || "",
+      thumbnail: (imageLinks && imageLinks.thumbnail) || "",
       textSnippet,
       infoLink,
     };
