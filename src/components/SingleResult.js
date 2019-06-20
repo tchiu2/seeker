@@ -7,6 +7,7 @@ import {
   Text,
 } from 'evergreen-ui';
 import ResultSnippet from './ResultSnippet';
+import ThumbnailPlaceholder from './ThumbnailPlaceholder';
 
 const SingleResult = ({ result }) => {
   const {
@@ -27,7 +28,11 @@ const SingleResult = ({ result }) => {
       width="60%"
     >
       <Pane padding={majorScale(1)}>
-        <img src={thumbnail} alt={thumbnail}/>
+        {thumbnail ? (
+          <img src={thumbnail} alt={thumbnail}/>
+        ) : (
+          <ThumbnailPlaceholder />
+        )}
       </Pane>
       <Pane
         display="flex"
