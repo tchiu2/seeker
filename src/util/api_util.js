@@ -14,7 +14,7 @@ const parseResponseData = ({ items }) =>
       publisher,
       publishedDate,
       imageLinks,
-      infoLink,
+      previewLink,
     } = volumeInfo;
     const { textSnippet } = searchInfo || { textSnippet: "" };
 
@@ -26,7 +26,7 @@ const parseResponseData = ({ items }) =>
       publishedDate: publishedDate || "",
       thumbnail: (imageLinks && imageLinks.thumbnail) || "",
       textSnippet,
-      infoLink,
+      previewLink,
     };
   });
 

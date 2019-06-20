@@ -1,10 +1,11 @@
 import React from 'react';
 import {
   majorScale,
-  Pane,
   Heading,
-  Text,
+  Link,
+  Pane,
   Paragraph,
+  Text,
 } from 'evergreen-ui';
 
 const SingleResult = ({ result }) => {
@@ -15,7 +16,7 @@ const SingleResult = ({ result }) => {
     publishedDate,
     thumbnail,
     textSnippet,
-    infoLink,
+    previewLink,
   } = result;
 
   return (
@@ -37,6 +38,7 @@ const SingleResult = ({ result }) => {
         <Text color="default">{authors}</Text>
         <Text color="default">{publisher} ({publishedDate.slice(0,4)})</Text>
         <Paragraph color="muted">{textSnippet}</Paragraph>
+        <Link href={previewLink}>View more details on Google Books</Link>
       </Pane>
     </Pane>
   );
