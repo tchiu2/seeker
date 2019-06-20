@@ -8,29 +8,31 @@ const defaultOpts = {
 };
 
 const parseResponseData = ({ items }) =>
-  items.map(({ id, searchInfo, volumeInfo }) => {
-    const {
-      authors,
-      title,
-      subtitle,
-      publisher,
-      publishedDate,
-      imageLinks,
-      previewLink,
-    } = volumeInfo;
-    const { textSnippet } = searchInfo || { textSnippet: "" };
+  items
+    ? items.map(({ id, searchInfo, volumeInfo }) => {
+        const {
+          authors,
+          title,
+          subtitle,
+          publisher,
+          publishedDate,
+          imageLinks,
+          previewLink,
+        } = volumeInfo;
+        const { textSnippet } = searchInfo || { textSnippet: "" };
 
-    return {
-      id,
-      authors: authors ? authors.join(", ") : "",
-      title: title + (subtitle ? `: ${subtitle}` : ""),
-      publisher,
-      publishedDate: publishedDate || "",
-      thumbnail: (imageLinks && imageLinks.thumbnail) || "",
-      textSnippet: entities.decode(textSnippet),
-      previewLink,
-    };
-  });
+        return {
+          id,
+          authors: authors ? authors.join(", ") : "",
+          title: title + (subtitle ? `: ${subtitle}` : ""),
+          publisher,
+          publishedDate: publishedDate || "",
+          thumbnail: (imageLinks && imageLinks.thumbnail) || "",
+          textSnippet: entities.decode(textSnippet),
+          previewLink,
+        };
+      })
+   : [];
 
 export const getBooks = (query, page = 1, options = defaultOpts) => {
   const optionsString = Object.entries(options)

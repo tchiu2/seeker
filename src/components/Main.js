@@ -16,6 +16,7 @@ class Main extends Component {
     prevQuery: '',
     results: [],
     page: 1,
+    hasMore: true,
     isLoading: false,
   };
 
@@ -35,7 +36,8 @@ class Main extends Component {
   };
 
   updateResults = results => this.setState({
-    results: [...this.state.results, ...results]
+    results: [...this.state.results, ...results],
+    hasMore: results.length > 0,
   }, this.setState({ isLoading: false }));
 
   handleClick = e => this.setState({ page: this.state.page + 1 }, this.loadMore);
@@ -74,7 +76,8 @@ class Main extends Component {
         >
           <Results results={this.state.results} />
           {!this.state.isLoading ? (
-            this.state.results.length > 0 && <Button onClick={this.handleClick}>Load more</Button>
+            (this.state.results.length > 0 && this.state.hasMore) &&
+              <Button onClick={this.handleClick}>Load more</Button>
           ) : (
             <Spinner />
           )}
