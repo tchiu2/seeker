@@ -7,6 +7,7 @@ import {
   Paragraph,
   Text,
 } from 'evergreen-ui';
+import ResultSnippet from './ResultSnippet';
 
 const SingleResult = ({ result }) => {
   const {
@@ -37,8 +38,8 @@ const SingleResult = ({ result }) => {
         <Heading size={600}>{title}</Heading>
         <Text color="default">{authors}</Text>
         <Text color="default">{publisher} ({publishedDate.slice(0,4)})</Text>
-        <Paragraph color="muted">{textSnippet}</Paragraph>
-        <Link href={previewLink}>View more details on Google Books</Link>
+        <ResultSnippet snippet={textSnippet} />
+        <Link href={previewLink}>Preview</Link>
       </Pane>
     </Pane>
   );
