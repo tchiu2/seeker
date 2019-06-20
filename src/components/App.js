@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/App.css';
 import { Pane } from 'evergreen-ui';
 
-import Search from './Search';
+import Main from './Main';
 
 const App = () => (
   <Pane 
@@ -11,7 +11,7 @@ const App = () => (
     flex={1}
     padding={16}
   >
-    <Search />
+    <Main />
   </Pane>
 );
 

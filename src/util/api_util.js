@@ -25,7 +25,7 @@ const parseResponseData = ({ items }) =>
       subtitle: subtitle || "",
       publisher,
       publishedDate,
-      thumbnail,
+      thumbnail: thumbnail || "",
       textSnippet,
       infoLink,
     };
