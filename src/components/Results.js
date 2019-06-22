@@ -9,7 +9,7 @@ const Results = ({ results }) => (
     alignItems="center"
   >
     {results.map((result, idx) =>
-      <SingleResult key={idx} result={result} />
+      <SingleResult key={idx} {...result} />
     )}
   </Pane>
 );

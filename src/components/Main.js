@@ -12,25 +12,26 @@ import { getBooks } from '../util/api_util';
 
 class Main extends Component {
   state = {
+    inputQuery: '',
     query: '',
-    prevQuery: '',
     results: [],
-    page: 1,
-    hasMore: true,
+    hasMore: false,
     isLoading: false,
   };
 
-  handleChange = e => this.setState({ query: e.target.value });
+  handleChange = e => this.setState({ inputQuery: e.target.value });
 
   handleKeyDown = e => {
-    if (!this.state.query) return;
+    if (!this.state.inputQuery) return;
 
-    if (e.keyCode === 13) {
-      if (this.state.query !== this.state.prevQuery) {
-        this.setState({ results: [], page: 1 });
-      }
+    if (e.key === "Enter") {
+      if (this.state.inputQuery === this.state.query) return;
 
-      this.setState({ prevQuery: this.state.query }, this.loadMore);
+      this.setState({
+        results: [],
+        query: this.state.inputQuery
+      }, this.loadMore);
+
       window.scrollTo(0, 0);
     }
   };
@@ -38,17 +39,20 @@ class Main extends Component {
   updateResults = results => this.setState({
     results: [...this.state.results, ...results],
     hasMore: results.length > 0,
-  }, this.setState({ isLoading: false }));
+    isLoading: false,
+  });
 
-  handleClick = e => this.setState({ page: this.state.page + 1 }, this.loadMore);
-
-  loadMore = () => {
-    const queryString = this.state.prevQuery.split(" ").join("+");
+  loadMore = () =>
     this.setState({ isLoading: true }, () =>
-      getBooks(queryString, this.state.page).then(this.updateResults));
-  };
+      getBooks({
+        q: this.state.query,
+        startIndex: this.state.results.length
+      }).then(this.updateResults)
+    );
 
   render() {
+    const { results, isLoading, hasMore } = this.state;
+
     return (
       <Pane>
         <Pane
@@ -63,7 +67,7 @@ class Main extends Component {
           <Search
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
-            value={this.props.query}
+            value={this.props.inputQuery}
           />
         </Pane>
         <Pane
@@ -74,13 +78,11 @@ class Main extends Component {
           flex={1}
           padding={majorScale(2)}
         >
-          <Results results={this.state.results} />
-          {!this.state.isLoading ? (
-            (this.state.results.length > 0 && this.state.hasMore) &&
-              <Button onClick={this.handleClick}>Load more</Button>
-          ) : (
-            <Spinner />
-          )}
+          <Results results={results} />
+          {isLoading
+            ? <Spinner />
+            : hasMore && <Button onClick={this.loadMore}>Load more</Button>
+          }
         </Pane>
       </Pane>
     );
