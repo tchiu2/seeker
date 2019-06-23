@@ -36,7 +36,7 @@ const parseResponseData = ({ items, totalItems }) => ({
 });
 
 export const getBooks = (options) => {
-  const q = options.q.split(" ").join("+");
+  const q = options.q.replace(" ", "+").replace('"', "");
   const optionsString = Object.entries({ ...defaultOpts, ...options, q })
     .map(option => option.join("="))
     .join("&");

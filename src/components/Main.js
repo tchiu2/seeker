@@ -37,6 +37,14 @@ class Main extends Component {
     }
   };
 
+  handleClick = keyword => e => {
+    this.setState({
+      results: [],
+      query: keyword,
+      inputQuery: keyword
+    }, this.loadMore);
+  };
+
   updateResults = ({ results, totalItems }) => this.setState({
     results: [...this.state.results, ...results],
     isLoading: false,
@@ -79,7 +87,7 @@ class Main extends Component {
           flex={1}
           padding={majorScale(2)}
         >
-          <Results results={results} />
+          <Results results={results} handleClick={this.handleClick} />
           {hasFetched && !isLoading && !hasMore &&
             <NoResults
               hasResults={hasResults}

@@ -18,6 +18,7 @@ const SingleResult = ({
   thumbnail,
   textSnippet,
   previewLink,
+  handleClick,
 }) => (
   <Pane
     display="flex"
@@ -39,7 +40,12 @@ const SingleResult = ({
       padding={majorScale(1)}
     >
       <Heading size={600}>{title}{subtitle && `: ${subtitle}`}</Heading>
-      <Text color="default">{authors.join(", ")}</Text>
+      <Pane display="flex">
+        {authors.map((author, i) => ([
+          i > 0 && <Text>,&nbsp;</Text>,
+          <Link href="#" onClick={handleClick(`inauthor:"${author}"`)}>{author}</Link>
+        ]))}
+      </Pane>
       <Text color="default">{publisher}{publishedDate && ` (${publishedDate.slice(0,4)})`}</Text>
       <ResultSnippet snippet={textSnippet} />
       <Pane flex={0}>
