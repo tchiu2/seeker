@@ -42,7 +42,9 @@ const SingleResult = ({
       <Text color="default">{authors.join(", ")}</Text>
       <Text color="default">{publisher}{publishedDate && ` (${publishedDate.slice(0,4)})`}</Text>
       <ResultSnippet snippet={textSnippet} />
-      <Link href={previewLink}>Preview</Link>
+      <Pane flex={0}>
+        <Link href={previewLink}>Preview</Link>
+      </Pane>
     </Pane>
   </Pane>
 );

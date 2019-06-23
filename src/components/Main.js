@@ -7,6 +7,7 @@ import {
 } from 'evergreen-ui';
 import Search from './Search';
 import Results from './Results';
+import NoResults from './NoResults';
 import { getBooks } from '../util/api_util';
 
 class Main extends Component {
@@ -52,15 +53,23 @@ class Main extends Component {
     }).then(this.updateResults));
 
   render() {
-    const { results, isLoading, hasFetched, totalItems } = this.state;
+    const {
+      results,
+      isLoading,
+      hasFetched,
+      totalItems,
+      inputQuery,
+      query,
+    } = this.state;
     const hasMore = results.length < totalItems;
+    const hasResults = !!results.length;
 
     return (
       <Pane>
         <Search
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          value={this.props.inputQuery}
+          value={inputQuery}
         />
         <Pane
           display="flex"
@@ -71,7 +80,12 @@ class Main extends Component {
           padding={majorScale(2)}
         >
           <Results results={results} />
-          {hasFetched && !isLoading && !results.length && "No results."}
+          {hasFetched && !isLoading && !hasMore &&
+            <NoResults
+              hasResults={hasResults}
+              query={query}
+            />
+          }
           {isLoading
             ? <Spinner />
             : hasMore && <Button onClick={this.loadMore}>Load more</Button>
