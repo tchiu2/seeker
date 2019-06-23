@@ -5,7 +5,6 @@ import {
   Pane,
   Spinner,
 } from 'evergreen-ui';
-
 import Search from './Search';
 import Results from './Results';
 import { getBooks } from '../util/api_util';
@@ -15,8 +14,9 @@ class Main extends Component {
     inputQuery: '',
     query: '',
     results: [],
-    hasMore: false,
+    totalItems: 0,
     isLoading: false,
+    hasFetched: false,
   };
 
   handleChange = e => this.setState({ inputQuery: e.target.value });
@@ -29,47 +29,39 @@ class Main extends Component {
 
       this.setState({
         results: [],
-        query: this.state.inputQuery
+        query: this.state.inputQuery,
       }, this.loadMore);
 
       window.scrollTo(0, 0);
     }
   };
 
-  updateResults = results => this.setState({
+  updateResults = ({ results, totalItems }) => this.setState({
     results: [...this.state.results, ...results],
-    hasMore: results.length > 0,
     isLoading: false,
+    totalItems,
   });
 
   loadMore = () =>
-    this.setState({ isLoading: true }, () =>
-      getBooks({
-        q: this.state.query,
-        startIndex: this.state.results.length
-      }).then(this.updateResults)
-    );
+    this.setState({
+      isLoading: true,
+      hasFetched: true,
+    }, () => getBooks({
+      q: this.state.query,
+      startIndex: this.state.results.length,
+    }).then(this.updateResults));
 
   render() {
-    const { results, isLoading, hasMore } = this.state;
+    const { results, isLoading, hasFetched, totalItems } = this.state;
+    const hasMore = results.length < totalItems;
 
     return (
       <Pane>
-        <Pane
-          display="flex"
-          justifyContent="center"
-          padding={majorScale(2)}
-          elevation={1}
-          backgroundColor="white"
-          position="sticky"
-          top={0}
-        >
-          <Search
-            onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
-            value={this.props.inputQuery}
-          />
-        </Pane>
+        <Search
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+          value={this.props.inputQuery}
+        />
         <Pane
           display="flex"
           flexDirection="column"
@@ -79,6 +71,7 @@ class Main extends Component {
           padding={majorScale(2)}
         >
           <Results results={results} />
+          {hasFetched && !isLoading && !results.length && "No results."}
           {isLoading
             ? <Spinner />
             : hasMore && <Button onClick={this.loadMore}>Load more</Button>

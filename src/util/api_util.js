@@ -7,8 +7,8 @@ const defaultOpts = {
   printType: "books",
 };
 
-const parseResponseData = ({ items }) =>
-  (items || []).map(({ id, searchInfo, volumeInfo }) => {
+const parseResponseData = ({ items, totalItems }) => ({
+  results: (items || []).map(({ id, searchInfo, volumeInfo }) => {
     const {
       authors,
       title,
@@ -31,7 +31,9 @@ const parseResponseData = ({ items }) =>
       textSnippet: entities.decode(textSnippet),
       previewLink,
     };
-  });
+  }),
+  totalItems
+});
 
 export const getBooks = (options) => {
   const q = options.q.split(" ").join("+");
