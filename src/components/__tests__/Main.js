@@ -1,7 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Button, Spinner } from 'evergreen-ui';
 import Main from '../Main';
 import Search from '../Search';
+import Results from '../Results';
+import NoResults from '../NoResults';
 
 describe('<Main />', () => {
   it('renders without crashing', () => {
@@ -108,5 +111,51 @@ describe('<Main />', () => {
     expect(search.prop("onChange")).toBe(instance.handleChange);
     expect(search.prop("onKeyDown")).toBe(instance.handleKeyDown);
     expect(search.prop("value")).toBe(instance.state.inputQuery);
+  });
+
+  it('renders a <Results /> component and passes the necssary props', () => {
+    const wrapper = shallow(<Main />);
+    const instance = wrapper.instance();
+    const results = wrapper.find(Results);
+
+    expect(results).toHaveLength(1);
+    expect(results.prop("handleClick")).toBe(instance.handleClick);
+    expect(results.prop("results")).toBe(instance.state.results);
+  });
+
+  it('renders a <NoResults /> component appropriately', () => {
+    const wrapper = shallow(<Main />);
+
+    expect(wrapper.find(NoResults)).toHaveLength(0);
+    // don't show it before fetching the first time
+    wrapper.setState({ hasFetched: true });
+    expect(wrapper.find(NoResults)).toHaveLength(1);
+
+    // render when results.length === totalItems
+    wrapper.setState({ results: ["foo"], totalItems: 2 });
+    expect(wrapper.find(NoResults)).toHaveLength(0);
+    wrapper.setState({ results: ["foo", "bar"] });
+    expect(wrapper.find(NoResults)).toHaveLength(1);
+  });
+
+  it('renders a <Spinner /> component when isLoading flag is set to true', () => {
+    const wrapper = shallow(<Main />);
+
+    expect(wrapper.find(Spinner)).toHaveLength(0);
+    wrapper.setState({ isLoading: true });
+    expect(wrapper.find(Spinner)).toHaveLength(1);
+  });
+
+  it('renders a "Load more" button when there are more results', () => {
+    const wrapper = shallow(<Main />);
+
+    // don't render before fetching the first time
+    expect(wrapper.find(Button)).toHaveLength(0);
+    wrapper.setState({ hasFetched: true, results: ["foo"], totalItems: 2 });
+    expect(wrapper.find(Button)).toHaveLength(1);
+
+    // don't render when results.length === totalItems
+    wrapper.setState({ results: ["foo", "bar"] });
+    expect(wrapper.find(Button)).toHaveLength(0);
   });
 });

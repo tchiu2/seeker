@@ -14,4 +14,8 @@ const Results = ({ results, handleClick }) => (
   </Pane>
 );
 
+Results.defaultProps = {
+  results: [],
+};
+
 export default Results;
