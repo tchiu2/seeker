@@ -49,7 +49,7 @@ const SingleResult = ({
       <Text color="default">{publisher}{publishedDate && ` (${publishedDate.slice(0,4)})`}</Text>
       <ResultSnippet snippet={textSnippet} />
       <Pane flex={0}>
-        <Link href={previewLink}>Preview</Link>
+        <Link target="_blank" href={previewLink}>Preview</Link>
       </Pane>
     </Pane>
   </Pane>

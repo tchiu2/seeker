@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paragraph } from 'evergreen-ui';
 
-const ResultSnippet = ({ snippet }) => { 
+const ResultSnippet = ({ snippet = "" }) => { 
   const text = snippet.replace(/<br>/gi, "");
 
   return (
