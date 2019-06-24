@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Pane } from 'evergreen-ui';
 import SingleResult from './SingleResult';
 
@@ -18,4 +18,4 @@ Results.defaultProps = {
   results: [],
 };
 
-export default Results;
+export default memo(Results);

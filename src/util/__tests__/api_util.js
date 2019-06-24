@@ -5,9 +5,9 @@ describe('Google Books API util', () => {
 
   beforeEach(() => {
     params = {
-      q: "foo",
+      q: 'foo',
       maxResults: 1,
-      printType: "books",
+      printType: 'books',
     };
   });
 
@@ -15,8 +15,8 @@ describe('Google Books API util', () => {
     items: [
       {
         volumeInfo: {
-          title: "foo",
-          authors: ["bar"],
+          title: 'foo',
+          authors: ['bar'],
         }
       }
     ],
@@ -27,14 +27,14 @@ describe('Google Books API util', () => {
     json: () => mockJsonPromise,
   });
 
-  jest.spyOn(global, "fetch").mockImplementation(() => mockFetchPromise);
+  jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
 
   it('exports a getBooks function', () => {
     expect(getBooks).toBeDefined();
   });
 
   it('takes a params object and uses it to build the request URL', done => {
-    const requestUrl = "https://www.googleapis.com/books/v1/volumes?maxResults=1&printType=books&q=foo";
+    const requestUrl = 'https://www.googleapis.com/books/v1/volumes?maxResults=1&printType=books&q=foo';
 
     getBooks(params)
     expect(global.fetch).toHaveBeenCalledTimes(1);

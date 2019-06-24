@@ -10,14 +10,14 @@ describe('<SingleResult />', () => {
 
   beforeEach(() => {
     props = {
-      authors: ["John Doe"],
-      title: "hello",
-      subtitle: "world",
-      publisher: "Random House",
-      publishedDate: "2010",
+      authors: ['John Doe'],
+      title: 'hello',
+      subtitle: 'world',
+      publisher: 'Random House',
+      publishedDate: '2010',
       thumbnail: null,
-      textSnippet: "Here's the book",
-      previewLink: "https://google.com",
+      textSnippet: 'Here\'s the book',
+      previewLink: 'https://google.com',
       handleClick: jest.fn(),
     };
   });
@@ -33,7 +33,7 @@ describe('<SingleResult />', () => {
   });
 
   it('renders an <img /> if a thumbnail is provided', () => {
-    props.thumbnail = "https://via.placeholder.com/150";
+    props.thumbnail = 'https://via.placeholder.com/150';
 
     const wrapper = shallow(<SingleResult {...props} />)
 
@@ -58,7 +58,7 @@ describe('<SingleResult />', () => {
     const wrapper = shallow(<SingleResult {...props} />);
     const titles = wrapper.find(Heading).props().children;
 
-    expect(titles.join("")).toEqual("hello: world");
+    expect(titles.join('')).toEqual('hello: world');
   });
 
   it('renders <ResultSnippet /> with textSnippet', () => {
@@ -70,7 +70,7 @@ describe('<SingleResult />', () => {
 
   it('renders a preview link with previewLink', () => {
     const wrapper = shallow(<SingleResult {...props} />);
-    const previewLink = wrapper.findWhere(n => n.props().children === "Preview");
+    const previewLink = wrapper.findWhere(n => n.props().children === 'Preview');
 
     expect(previewLink.prop('href')).toEqual(props.previewLink);
   });

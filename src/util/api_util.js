@@ -1,10 +1,10 @@
 import { AllHtmlEntities as entities } from 'html-entities';
 
-const baseURL = "https://www.googleapis.com/books/v1";
+const baseURL = 'https://www.googleapis.com/books/v1';
 
 const defaultParams = {
   maxResults: 20,
-  printType: "books",
+  printType: 'books',
 };
 
 const parseResponseData = ({ items, totalItems }) => ({
@@ -18,7 +18,7 @@ const parseResponseData = ({ items, totalItems }) => ({
       imageLinks,
       previewLink,
     } = volumeInfo;
-    const textSnippet = searchInfo ? searchInfo.textSnippet : "";
+    const textSnippet = searchInfo ? searchInfo.textSnippet : '';
 
     return {
       id,
@@ -36,10 +36,10 @@ const parseResponseData = ({ items, totalItems }) => ({
 });
 
 export const getBooks = params => {
-  const q = params.q.replace(" ", "+").replace('"', "");
+  const q = params.q.replace(' ', '+').replace('"', '');
   const paramsString = Object.entries({ ...defaultParams, ...params, q })
-    .map(param => param.join("="))
-    .join("&");
+    .map(param => param.join('='))
+    .join('&');
 
   return fetch(`${baseURL}/volumes?${paramsString}`)
     .then(res => res.json())

@@ -10,9 +10,9 @@ describe('<Results />', () => {
 
   it('renders the correct number of <SingleResult /> components', () => {
     const results = [
-      { title: "foo" },
-      { title: "bar" },
-      { title: "baz" },
+      { title: 'foo' },
+      { title: 'bar' },
+      { title: 'baz' },
     ];
     
     const wrapper = shallow(<Results results={results} />);

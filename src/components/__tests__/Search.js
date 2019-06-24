@@ -22,7 +22,7 @@ describe('<Search />', () => {
   it('receives props and correctly passes them to the input', () => {
     const wrapper = shallow(<Search foo="bar"/>);
     const input = wrapper.find(SearchInput).first();
-    expect(input.props().foo).toEqual("bar");
+    expect(input.props().foo).toEqual('bar');
   });
 
   it('sticks to the top of view', () => {

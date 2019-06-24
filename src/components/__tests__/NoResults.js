@@ -14,9 +14,9 @@ describe('<NoResults />', () => {
   });
 
   it('renders title correctly based on hasResults and query props', () => {
-    const queryString = "foo";
+    const queryString = 'foo';
     const wrapper = shallow(<NoResults query={queryString} hasResults={false} />);
     expect(wrapper.props().title).toContain(queryString);
-    expect(wrapper.props().title).not.toContain("more");
+    expect(wrapper.props().title).not.toContain('more');
   });
 });
