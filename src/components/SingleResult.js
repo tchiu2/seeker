@@ -40,10 +40,10 @@ const SingleResult = ({
       padding={majorScale(1)}
     >
       <Heading size={600}>{title}{subtitle && `: ${subtitle}`}</Heading>
-      <Pane display="flex">
+      <Pane display="flex" flexWrap="wrap">
         {authors.map((author, i) => ([
-          i > 0 && <Text>,&nbsp;</Text>,
-          <Link href="#" onClick={handleClick(`inauthor:"${author}"`)}>{author}</Link>
+          i > 0 && <Text key={'spacer' + i}>,&nbsp;</Text>,
+          <Link key={i} href="#" onClick={handleClick(`inauthor:"${author}"`)}>{author}</Link>
         ]))}
       </Pane>
       <Text color="default">{publisher}{publishedDate && ` (${publishedDate.slice(0,4)})`}</Text>
