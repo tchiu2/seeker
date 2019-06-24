@@ -2,7 +2,7 @@ import { AllHtmlEntities as entities } from 'html-entities';
 
 const baseURL = "https://www.googleapis.com/books/v1";
 
-const defaultOpts = {
+const defaultParams = {
   maxResults: 20,
   printType: "books",
 };
@@ -35,13 +35,13 @@ const parseResponseData = ({ items, totalItems }) => ({
   totalItems
 });
 
-export const getBooks = (options) => {
-  const q = options.q.replace(" ", "+").replace('"', "");
-  const optionsString = Object.entries({ ...defaultOpts, ...options, q })
-    .map(option => option.join("="))
+export const getBooks = params => {
+  const q = params.q.replace(" ", "+").replace('"', "");
+  const paramsString = Object.entries({ ...defaultParams, ...params, q })
+    .map(param => param.join("="))
     .join("&");
 
-  return fetch(`${baseURL}/volumes?${optionsString}`)
+  return fetch(`${baseURL}/volumes?${paramsString}`)
     .then(res => res.json())
     .then(parseResponseData);
 }
