@@ -1,9 +1,10 @@
 # Seeker
-[Live](https://tc-seeker.netlify.com/)
 
 Seeker allows users to search for books using a simple, pleasant user interface.
 
-### Technologies Used
+[Live](https://tc-seeker.netlify.com/)
+
+## Technologies Used
 - React
 - JavaScript
 - Jest/Enzyme for unit tests
@@ -11,7 +12,7 @@ Seeker allows users to search for books using a simple, pleasant user interface.
 - [Evergreen](https://evergreen.segment.com/) for UI components
 
 
-### Core Features
+## Core Features
 You can:
 1. Type in a query to get a list of books matching that query.
 2. View results with the following information:
