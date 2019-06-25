@@ -33,24 +33,24 @@ describe('Google Books API util', () => {
     expect(getBooks).toBeDefined();
   });
 
-  it('takes a params object and uses it to build the request URL', done => {
+  it('takes a params object and uses it to build the request URL', () => {
     const requestUrl = 'https://www.googleapis.com/books/v1/volumes?maxResults=1&printType=books&q=foo';
 
     getBooks(params)
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledWith(requestUrl);
 
-    done();
+    return Promise.resolve().then(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+      expect(global.fetch).toHaveBeenCalledWith(requestUrl);
+    });
   });
 
-  it('parses the response into the appropriate format', done => {
-    getBooks(params)
+  it('parses the response into the appropriate format', () => {
+    return getBooks(params)
       .then(data => {
         expect(data).toHaveProperty('results');
         expect(data).toHaveProperty('totalItems');
         expect(data).toHaveProperty(['results', 0, 'title'], 'foo');
         expect(data).toHaveProperty(['results', 0, 'authors', 0], 'bar');
       });
-    done();
   });
 });

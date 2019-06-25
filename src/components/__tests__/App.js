@@ -5,6 +5,7 @@ import App from '../App';
 import Search from '../Search';
 import Results from '../Results';
 import NoResults from '../NoResults';
+import * as ApiUtil from '../../util/api_util';
 
 describe('<App />', () => {
   it('renders without crashing', () => {
@@ -70,8 +71,8 @@ describe('<App />', () => {
 
   it('has a loadMore function that updates isLoading and hasFetched state', () => {
     const instance = shallow(<App />).instance();
-    const getBooks = jest.fn();
-    instance.updateResults = jest.fn();
+    jest.spyOn(ApiUtil, 'getBooks');
+    jest.spyOn(instance, 'updateResults');
 
     expect(instance.state.isLoading).toEqual(false);
     expect(instance.state.hasFetched).toEqual(false);
@@ -82,8 +83,9 @@ describe('<App />', () => {
   });
 
   it('calls getBooks with the query string and updates state with the results correctly', () => {
+    jest.spyOn(ApiUtil, 'getBooks').mockResolvedValue({ results: ['foo'], totalItems: 1 });
+
     const instance = shallow(<App />).instance();
-    const getBooks = jest.fn(params => Promise.resolve({ results: ['foo'], totalItems: 1 }));
 
     instance.setState({ query: 'foo' });
 
@@ -92,14 +94,11 @@ describe('<App />', () => {
 
     instance.loadMore();
 
-    return getBooks({
-      q: instance.state.query,
-      startIndex: instance.state.results.length
-    }).then(instance.updateResults)
-      .then(() => {
-        expect(instance.state.results).toHaveLength(1);
-        expect(instance.state.totalItems).toEqual(1);
-      });
+    return Promise.resolve().then(() => {
+      expect(ApiUtil.getBooks).toHaveBeenCalledWith({ q: 'foo', startIndex: 0 });
+      expect(instance.state.results).toHaveLength(1);
+      expect(instance.state.totalItems).toEqual(1);
+    });
   });
 
   it('renders a <Search /> component and passes the necessary props', () => {
