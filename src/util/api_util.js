@@ -36,7 +36,7 @@ const parseResponseData = ({ items, totalItems }) => ({
 });
 
 export const getBooks = params => {
-  const q = params.q.replace(' ', '+').replace('"', '');
+  const q = params.q.replace(/ /g, '+').replace(/"/g, '');
   const paramsString = Object.entries({ ...defaultParams, ...params, q })
     .map(param => param.join('='))
     .join('&');
@@ -44,4 +44,4 @@ export const getBooks = params => {
   return fetch(`${baseURL}/volumes?${paramsString}`)
     .then(res => res.json())
     .then(parseResponseData);
-}
+};
