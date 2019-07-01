@@ -12,7 +12,7 @@ describe('<App />', () => {
     shallow(<App />);
   });
 
-  it('updates inputQuery state correctly for onChange event', () => {
+  it('updates state correctly when user types in input field', () => {
     const instance = shallow(<App />).instance();
     const event = { target: { value: 'foo' } };
 
@@ -21,7 +21,7 @@ describe('<App />', () => {
     expect(instance.state.inputQuery).toEqual('foo');
   });
 
-  it('updates state correctly for onKeyDown events', () => {
+  it('only triggers fetching more data when the "Enter" key is pressed and the query is different from the previous', () => {
     global.scrollTo = jest.fn();
     const instance = shallow(<App />).instance();
     instance.loadMore = jest.fn();
@@ -48,13 +48,13 @@ describe('<App />', () => {
     expect(global.scrollTo.mock.calls.length).toEqual(1);
   });
 
-  it('has a handleClick function that closes over a keyword', () => {
+  it('has reusuable click handler for links', () => {
     const instance = shallow(<App />).instance();
 
     expect(typeof instance.handleClick('foo')).toEqual('function');
   });
 
-  it('updates state correctly for onClick events', () => {
+  it('updates state correctly when user clicks on various elements', () => {
     const instance = shallow(<App />).instance();
     instance.loadMore = jest.fn();
 
@@ -69,7 +69,7 @@ describe('<App />', () => {
     expect(instance.loadMore.mock.calls.length).toEqual(2);
   });
 
-  it('has a loadMore function that updates isLoading and hasFetched state', () => {
+  it('keeps track of loading and fetched state that is toggled by searching for results', () => {
     const instance = shallow(<App />).instance();
     jest.spyOn(ApiUtil, 'getBooks');
     jest.spyOn(instance, 'updateResults');
@@ -82,7 +82,7 @@ describe('<App />', () => {
     expect(instance.state.hasFetched).toEqual(true);
   });
 
-  it('calls getBooks with the query string and updates state with the results correctly', () => {
+  it('requests search results based on query and updates state with the results correctly', () => {
     jest.spyOn(ApiUtil, 'getBooks').mockResolvedValue({ results: ['foo'], totalItems: 1 });
 
     const instance = shallow(<App />).instance();
@@ -112,7 +112,7 @@ describe('<App />', () => {
     expect(search.prop('value')).toBe(instance.state.inputQuery);
   });
 
-  it('renders a <Results /> component and passes the necssary props', () => {
+  it('renders a <Results /> component and passes the necessary props', () => {
     const wrapper = shallow(<App />);
     const instance = wrapper.instance();
     const results = wrapper.find(Results);
@@ -122,7 +122,7 @@ describe('<App />', () => {
     expect(results.prop('results')).toBe(instance.state.results);
   });
 
-  it('renders a <NoResults /> component appropriately', () => {
+  it('renders a <NoResults /> component when there are no (more) results', () => {
     const wrapper = shallow(<App />);
 
     expect(wrapper.find(NoResults)).toHaveLength(0);
@@ -137,7 +137,7 @@ describe('<App />', () => {
     expect(wrapper.find(NoResults)).toHaveLength(1);
   });
 
-  it('renders a <Spinner /> component when isLoading flag is set to true', () => {
+  it('renders a <Spinner /> component when the app is in loading state', () => {
     const wrapper = shallow(<App />);
 
     expect(wrapper.find(Spinner)).toHaveLength(0);
