@@ -22,10 +22,6 @@ describe('<Book />', () => {
     };
   });
 
-  it('renders with default authors prop', () => {
-    shallow(<Book />);
-  });
-
   it('renders a <ThumbnailPlaceholder /> if a thumbnail is not provided', () => {
     const wrapper = shallow(<Book {...props} />)
 

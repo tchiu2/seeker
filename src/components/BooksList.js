@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import { Pane } from 'evergreen-ui';
 import Book from './Book';
 
@@ -16,6 +17,11 @@ const BooksList = ({ books, handleClick }) => (
 
 BooksList.defaultProps = {
   books: [],
+};
+
+BooksList.propTypes = {
+  books: PropTypes.array.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default memo(BooksList);

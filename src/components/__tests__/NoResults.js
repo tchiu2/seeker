@@ -4,19 +4,27 @@ import { Alert } from 'evergreen-ui';
 import NoResults from '../NoResults';
 
 describe('<NoResults />', () => {
+  let props;
+  beforeEach(() => {
+    props = {
+      hasResults: true,
+      query: 'foo',
+    };
+  });
+
   it('renders without crashing', () => {
-    shallow(<NoResults />);
+    shallow(<NoResults {...props} />);
   });
 
   it('renders a <Alert /> to display the no (more) results message', () => {
-    const wrapper = shallow(<NoResults />);
+    const wrapper = shallow(<NoResults {...props} />);
     expect(wrapper.find(Alert)).toHaveLength(1);
   });
 
   it('renders title correctly based on hasResults and query props', () => {
-    const queryString = 'foo';
-    const wrapper = shallow(<NoResults query={queryString} hasResults={false} />);
-    expect(wrapper.props().title).toContain(queryString);
+    props.hasResults = false;
+    const wrapper = shallow(<NoResults {...props} />);
+    expect(wrapper.props().title).toContain('foo');
     expect(wrapper.props().title).not.toContain('more');
   });
 });

@@ -12,11 +12,12 @@ describe('<BooksList />', () => {
         { title: 'foo', authors: ['abc'] },
         { title: 'bar', authors: ['def'] },
         { title: 'baz', authors: ['xyz'] },
-      ]
+      ],
+      handleClick: jest.fn(),
     };
   });
 
-  it('renders correctly without results prop', () => {
+  it('renders correctly without books prop', () => {
     shallow(<BooksList />);
   });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   majorScale,
   Heading,
@@ -57,6 +58,18 @@ const Book = ({
 
 Book.defaultProps = {
   authors: []
+};
+
+Book.propTypes = {
+  authors: PropTypes.array.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  publisher: PropTypes.string,
+  publishedDate: PropTypes.string,
+  thumbnail: PropTypes.string,
+  textSnippet: PropTypes.string,
+  previewLink: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default Book;

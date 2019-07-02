@@ -22,8 +22,10 @@ const Search = props =>
     />
   </Pane>
 
-// Search.propTypes = {
-//   onChange: PropTypes.func.isRequired,
-// };
+Search.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default Search;
