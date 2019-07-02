@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
-	majorScale,
+  majorScale,
   Pane,
   SearchInput
 } from 'evergreen-ui';
@@ -20,5 +21,9 @@ const Search = props =>
       {...props}
     />
   </Pane>
+
+// Search.propTypes = {
+//   onChange: PropTypes.func.isRequired,
+// };
 
 export default Search;

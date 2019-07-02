@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, shallow } from 'enzyme';
 import { Heading, Link } from 'evergreen-ui';
+import Book from '../Book';
+import BookSnippet from '../BookSnippet';
 import ThumbnailPlaceholder from '../ThumbnailPlaceholder';
-import SingleResult from '../SingleResult';
-import ResultSnippet from '../ResultSnippet';
 
-describe('<SingleResult />', () => {
+describe('<Book />', () => {
   let props;
 
   beforeEach(() => {
@@ -23,11 +23,11 @@ describe('<SingleResult />', () => {
   });
 
   it('renders with default authors prop', () => {
-    shallow(<SingleResult />);
+    shallow(<Book />);
   });
 
   it('renders a <ThumbnailPlaceholder /> if a thumbnail is not provided', () => {
-    const wrapper = shallow(<SingleResult {...props} />)
+    const wrapper = shallow(<Book {...props} />)
 
     expect(wrapper.find(ThumbnailPlaceholder)).toHaveLength(1);
   });
@@ -35,7 +35,7 @@ describe('<SingleResult />', () => {
   it('renders an <img /> if a thumbnail is provided', () => {
     props.thumbnail = 'https://via.placeholder.com/150';
 
-    const wrapper = shallow(<SingleResult {...props} />)
+    const wrapper = shallow(<Book {...props} />)
 
     expect(wrapper.find('img')).toHaveLength(1);
   });
@@ -45,7 +45,7 @@ describe('<SingleResult />', () => {
     props.handleClick.mockReturnValue(callback);
 
     const author = props.authors[0];
-    const wrapper = shallow(<SingleResult {...props} />)
+    const wrapper = shallow(<Book {...props} />)
     const authorLink = wrapper.findWhere(n => n.props().children === author);
 
     authorLink.simulate('click');
@@ -55,21 +55,21 @@ describe('<SingleResult />', () => {
   });
 
   it('renders title correctly', () => {
-    const wrapper = shallow(<SingleResult {...props} />);
+    const wrapper = shallow(<Book {...props} />);
     const titles = wrapper.find(Heading).props().children;
 
     expect(titles.join('')).toEqual('hello: world');
   });
 
-  it('renders <ResultSnippet /> with textSnippet', () => {
-    const wrapper = shallow(<SingleResult {...props} />);
-    const resultSnippet = wrapper.find(ResultSnippet);
+  it('renders <BookSnippet /> with textSnippet', () => {
+    const wrapper = shallow(<Book {...props} />);
+    const bookSnippet = wrapper.find(BookSnippet);
 
-    expect(resultSnippet.prop('snippet')).toEqual(props.textSnippet);
+    expect(bookSnippet.prop('snippet')).toEqual(props.textSnippet);
   });
 
   it('renders a preview link with previewLink', () => {
-    const wrapper = shallow(<SingleResult {...props} />);
+    const wrapper = shallow(<Book {...props} />);
     const previewLink = wrapper.findWhere(n => n.props().children === 'Preview');
 
     expect(previewLink.prop('href')).toEqual(props.previewLink);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paragraph } from 'evergreen-ui';
 
-const ResultSnippet = ({ snippet }) => {
+const BookSnippet = ({ snippet }) => {
   const text = snippet.replace(/<br>/gi, '');
 
   return (
@@ -14,8 +14,8 @@ const ResultSnippet = ({ snippet }) => {
   );
 };
 
-ResultSnippet.defaultProps = {
+BookSnippet.defaultProps = {
   snippet: '',
 };
 
-export default ResultSnippet;
+export default BookSnippet;

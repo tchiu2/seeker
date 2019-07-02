@@ -6,7 +6,7 @@ import {
   Spinner,
 } from 'evergreen-ui';
 import Search from './Search';
-import Results from './Results';
+import BooksList from './BooksList';
 import NoResults from './NoResults';
 import { getBooks } from '../util/api_util';
 
@@ -14,8 +14,8 @@ class App extends Component {
   state = {
     inputQuery: '',
     query: '',
-    results: [],
-    totalItems: 0,
+    searchResults: [],
+    totalResults: 0,
     isLoading: false,
     hasFetched: false,
   };
@@ -29,7 +29,7 @@ class App extends Component {
       if (this.state.inputQuery === this.state.query) return;
 
       this.setState({
-        results: [],
+        searchResults: [],
         query: this.state.inputQuery,
       }, this.loadMore);
 
@@ -39,7 +39,7 @@ class App extends Component {
 
   handleClick = keyword => e => {
     this.setState({
-      results: [],
+      searchResults: [],
       query: keyword,
       inputQuery: keyword
     }, this.loadMore);
@@ -47,9 +47,9 @@ class App extends Component {
 
   updateResults = ({ results, totalItems }) => {
     this.setState({
-      results: [...this.state.results, ...results],
+      searchResults: [...this.state.searchResults, ...results],
       isLoading: false,
-      totalItems,
+      totalResults: totalItems,
     });
   };
 
@@ -59,21 +59,21 @@ class App extends Component {
       hasFetched: true,
     }, () => getBooks({
       q: this.state.query,
-      startIndex: this.state.results.length,
+      startIndex: this.state.searchResults.length,
     }).then(this.updateResults));
   };
 
   render() {
     const {
-      results,
+      searchResults,
       isLoading,
       hasFetched,
-      totalItems,
+      totalResults,
       inputQuery,
       query,
     } = this.state;
-    const hasMore = results.length < totalItems;
-    const hasResults = !!results.length;
+    const hasMore = searchResults.length < totalResults;
+    const hasResults = !!searchResults.length;
 
     return (
       <Pane>
@@ -90,7 +90,7 @@ class App extends Component {
           flex={1}
           padding={majorScale(2)}
         >
-          <Results results={results} handleClick={this.handleClick} />
+          <BooksList books={searchResults} handleClick={this.handleClick} />
           {hasFetched && !isLoading && !hasMore &&
             <NoResults
               hasResults={hasResults}

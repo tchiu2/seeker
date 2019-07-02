@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { Button, Spinner } from 'evergreen-ui';
 import App from '../App';
 import Search from '../Search';
-import Results from '../Results';
+import BooksList from '../BooksList';
 import NoResults from '../NoResults';
 import * as ApiUtil from '../../util/api_util';
 
@@ -29,7 +29,7 @@ describe('<App />', () => {
     const nonEnterKeyEvent = { key: 'a' };
     const enterKeyEvent = { key: 'Enter' };
 
-    instance.setState({ results: [], inputQuery: 'foo', query: '' })
+    instance.setState({ searchResults: [], inputQuery: 'foo', query: '' })
 
     expect(instance.state.query).toEqual('');
 
@@ -89,15 +89,15 @@ describe('<App />', () => {
 
     instance.setState({ query: 'foo' });
 
-    expect(instance.state.results).toHaveLength(0);
-    expect(instance.state.totalItems).toEqual(0);
+    expect(instance.state.searchResults).toHaveLength(0);
+    expect(instance.state.totalResults).toEqual(0);
 
     instance.loadMore();
 
     return Promise.resolve().then(() => {
       expect(ApiUtil.getBooks).toHaveBeenCalledWith({ q: 'foo', startIndex: 0 });
-      expect(instance.state.results).toHaveLength(1);
-      expect(instance.state.totalItems).toEqual(1);
+      expect(instance.state.searchResults).toHaveLength(1);
+      expect(instance.state.totalResults).toEqual(1);
     });
   });
 
@@ -112,14 +112,14 @@ describe('<App />', () => {
     expect(search.prop('value')).toBe(instance.state.inputQuery);
   });
 
-  it('renders a <Results /> component and passes the necessary props', () => {
+  it('renders a <BooksList /> component and passes the necessary props', () => {
     const wrapper = shallow(<App />);
     const instance = wrapper.instance();
-    const results = wrapper.find(Results);
+    const booksList = wrapper.find(BooksList);
 
-    expect(results).toHaveLength(1);
-    expect(results.prop('handleClick')).toBe(instance.handleClick);
-    expect(results.prop('results')).toBe(instance.state.results);
+    expect(booksList).toHaveLength(1);
+    expect(booksList.prop('handleClick')).toBe(instance.handleClick);
+    expect(booksList.prop('books')).toBe(instance.state.searchResults);
   });
 
   it('renders a <NoResults /> component when there are no (more) results', () => {
@@ -131,9 +131,9 @@ describe('<App />', () => {
     expect(wrapper.find(NoResults)).toHaveLength(1);
 
     // render when results.length === totalItems
-    wrapper.setState({ results: ['foo'], totalItems: 2 });
+    wrapper.setState({ searchResults: ['foo'], totalResults: 2 });
     expect(wrapper.find(NoResults)).toHaveLength(0);
-    wrapper.setState({ results: ['foo', 'bar'] });
+    wrapper.setState({ searchResults: ['foo', 'bar'] });
     expect(wrapper.find(NoResults)).toHaveLength(1);
   });
 
@@ -150,11 +150,11 @@ describe('<App />', () => {
 
     // don't render before fetching the first time
     expect(wrapper.find(Button)).toHaveLength(0);
-    wrapper.setState({ hasFetched: true, results: ['foo'], totalItems: 2 });
+    wrapper.setState({ hasFetched: true, searchResults: ['foo'], totalResults: 2 });
     expect(wrapper.find(Button)).toHaveLength(1);
 
     // don't render when results.length === totalItems
-    wrapper.setState({ results: ['foo', 'bar'] });
+    wrapper.setState({ searchResults: ['foo', 'bar'] });
     expect(wrapper.find(Button)).toHaveLength(0);
   });
 });
