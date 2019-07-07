@@ -27,6 +27,7 @@ const Book = ({
     margin={majorScale(1)}
     width="100%"
     maxWidth={940}
+    minHeight={180}
   >
     <Pane padding={majorScale(1)}>
       {thumbnail ? (

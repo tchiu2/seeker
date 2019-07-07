@@ -36,7 +36,7 @@ const parseResponseData = ({ items, totalItems }) => ({
 });
 
 export const getBooks = params => {
-  const q = encodeURI(params.q.replace(/ /g, '+').replace(/"/g, ''));
+  const q = encodeURI(params.q.replace(/ /g, '+'));
   const paramsString = Object.entries({ ...defaultParams, ...params, q })
     .map(param => param.join('='))
     .join('&');
